@@ -1,4 +1,5 @@
-﻿using EfInheritanceDemo.Models.TPH;
+﻿using EfInheritanceDemo.Models.TPC;
+using EfInheritanceDemo.Models.TPH;
 using EfInheritanceDemo.Models.TPT;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,6 +15,7 @@ public class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        //TPT
         modelBuilder.Entity<Vehicle>()
             .ToTable("Vehicles");
 
@@ -22,6 +24,16 @@ public class AppDbContext : DbContext
 
         modelBuilder.Entity<ElectricCar>()
             .ToTable("ElectricCars");
+
+        //TPC
+        modelBuilder.Entity<PaymentMethod>()
+        .UseTpcMappingStrategy();
+
+        modelBuilder.Entity<CreditCard>()
+            .ToTable("CreditCards");
+
+        modelBuilder.Entity<BankTransfer>()
+            .ToTable("BankTransfers");
     }
 
     public DbSet<Employee> Employees => Set<Employee>();
@@ -33,4 +45,11 @@ public class AppDbContext : DbContext
     public DbSet<Vehicle> Vehicles => Set<Vehicle>();
     public DbSet<Car> Cars => Set<Car>();
     public DbSet<ElectricCar> ElectricCars => Set<ElectricCar>();
+
+    public DbSet<PaymentMethod> PaymentMethods => Set<PaymentMethod>();
+
+    public DbSet<CreditCard> CreditCards => Set<CreditCard>();
+
+    public DbSet<BankTransfer> BankTransfers => Set<BankTransfer>();
+
 }
