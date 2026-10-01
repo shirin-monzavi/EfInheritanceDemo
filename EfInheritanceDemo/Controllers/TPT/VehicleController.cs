@@ -1,4 +1,5 @@
 ﻿using EfInheritanceDemo.Data;
+using EfInheritanceDemo.Models.TPT;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -37,5 +38,37 @@ public class VehiclesController : ControllerBase
         var cars = await _db.ElectricCars.ToListAsync();
 
         return Ok(cars);
+    }
+
+    [HttpPost("seed")]
+    public async Task<IActionResult> Seed()
+    {
+        var vehicles = new Vehicle[]
+        {
+        new ElectricCar
+        {
+            Brand = "Tesla",
+            Model = "Model 3",
+            NumberOfDoors = 4,
+            BatteryCapacity = 75
+        },
+
+        new ElectricCar
+        {
+            Brand = "BMW",
+            Model = "i4",
+            NumberOfDoors = 4,
+            BatteryCapacity = 81
+        }
+        };
+
+        await _db.Vehicles.AddRangeAsync(vehicles);
+
+        await _db.SaveChangesAsync();
+
+        return Ok(new
+        {
+            Message = "Vehicles seeded successfully."
+        });
     }
 }
